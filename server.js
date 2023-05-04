@@ -27,6 +27,7 @@ db.mongoose
   })
 
 require('./app/routes/product.routes')(app)
+require('./app/routes/transaction.routes')(app)
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`)
