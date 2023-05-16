@@ -18,18 +18,33 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
+  // find by status
   const { status } = req.query
-  if (status !== undefined) {
+  if (status) {
     Transaction.find({ status: status })
       .sort('-createdAt')
       .then((data) => res.send({ data: data }))
       .catch((err) => res.status(500).send({ message: err.message }))
-  } else {
-    Transaction.find()
+    return
+  }
+  // find by createdAt range
+  const { startDate, endDate } = req.query
+  if (startDate && endDate) {
+    Transaction.find({
+      createdAt: {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      },
+    })
       .sort('-createdAt')
       .then((data) => res.send({ data: data }))
       .catch((err) => res.status(500).send({ message: err.message }))
+    return
   }
+  Transaction.find()
+    .sort('-createdAt')
+    .then((data) => res.send({ data: data }))
+    .catch((err) => res.status(500).send({ message: err.message }))
 }
 
 exports.findById = (req, res) => {
