@@ -18,15 +18,6 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  // find by status
-  const { status } = req.query
-  if (status) {
-    Transaction.find({ status: status })
-      .sort('-createdAt')
-      .then((data) => res.send({ data: data }))
-      .catch((err) => res.status(500).send({ message: err.message }))
-    return
-  }
   // find by createdAt range
   const { startDate, endDate } = req.query
   if (startDate && endDate) {
